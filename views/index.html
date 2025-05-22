@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Alpha Education Platform</title>
+  <link rel="stylesheet" href="/styles.css"> <!-- Correct path for public folder -->
+</head>
+<body>
+  <header>
+    <h1>Alpha Education Dashboard</h1>
+  </header>
+
+  <main class="container">
+    <section class="filter-section">
+      <h2>Поиск и фильтрация студентов</h2>
+      <form id="filterForm">
+        <input type="text" placeholder="Поиск по имени, email или ИИН" />
+        <select>
+          <option value="">Статус обучения</option>
+          <option value="active">Студент</option>
+          <option value="graduated">Выпускник</option>
+        </select>
+        <select>
+          <option value="">Источник финансирования</option>
+          <option value="paid">Полная оплата</option>
+          <option value="grant">Грант (TechOrda)</option>
+          <option value="discount">Скидка</option>
+        </select>
+        <button type="submit">Применить</button>
+      </form>
+    </section>
+
+    <section class="student-table">
+      <h2>Список студентов</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>ФИО</th>
+            <th>ИИН</th>
+            <th>Email</th>
+            <th>Телефон</th>
+            <th>Статус</th>
+            <th>Поток</th>
+            <th>Финансирование</th>
+            <th>Оплачено</th>
+            <th>Остаток</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Айгерим Садыкова</td>
+            <td>990101300123</td>
+            <td>aigerim@mail.com</td>
+            <td>+7 777 000 0000</td>
+            <td>Студент</td>
+            <td>Первый поток</td>
+            <td>Грант (TechOrda)</td>
+            <td>₸0</td>
+            <td>₸0</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+  </main>
+
+  <footer>
+    <p>© 2025 Alpha Education</p>
+  </footer>
+</body>
+</html>
