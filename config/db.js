@@ -1,17 +1,14 @@
-const mongoose = require('mongoose');
-require('dotenv').config();
+// db.js
+const { Client } = require('pg');
 
-const connectDB = async () => {
-  try {
-    await mongoose.connect(process.env.MONGO_URI, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    });
-    console.log('MongoDB connected...');
-  } catch (error) {
-    console.error(error.message);
-    process.exit(1);
-  }
-};
+const client = new Client({
+  user: 'postgres',   // replace with your PostgreSQL username
+  host: 'localhost',
+  database: 'Alpha(Demo)',   // replace with your database name
+  password: '12345',   // replace with your password
+  port: 5432,
+});
 
-module.exports = connectDB;
+client.connect();
+
+module.exports = client;

@@ -1,20 +1,24 @@
+// app.js
 const express = require('express');
-const path = require('path');
+const cors = require('cors');
+const bodyParser = require('body-parser');
+const path = require('path');  // Added for static file serving
+const studentRoutes = require('./routes/studentRoutes');  // Routes for students
 
 const app = express();
 
-// Serve static files (CSS, JS, images from 'public' folder)
-app.use(express.static(path.join(__dirname, 'public')));
+// Middlewares
+app.use(cors());
+app.use(bodyParser.json());
 
-// Serve index.html on root
-app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'views', 'index.html'));
-});
+// Serve the static HTML file
+app.use(express.static(path.join(__dirname, 'views')));
 
-// Port Number
-const PORT = process.env.PORT || 3000;
 
-// Start Server
-app.listen(PORT, () => {
-  console.log(`Server started on port ${PORT}`);
+// Routes
+app.use('/api/students', studentRoutes);  // API routes for students
+
+// Start the server
+app.listen(5000, () => {
+  console.log('Server running on port 5000');
 });
