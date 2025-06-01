@@ -1,7 +1,5 @@
-// controllers/studentController.js
-const Student = require('..models/Student');  // Проверьте путь
+const Student = require('..models/Student');  
 
-// Функция для получения всех студентов
 exports.getStudents = async (req, res) => {
   try {
     const students = await Student.findAll();
@@ -11,7 +9,6 @@ exports.getStudents = async (req, res) => {
   }
 };
 
-// Функция для создания студента
 exports.createStudent = async (req, res) => {
   try {
     const { fullName, iin, email, phone } = req.body;

@@ -2,13 +2,12 @@ const express = require('express');
 const router = express.Router();
 const multer = require('multer');
 const XLSX = require('xlsx');
-const Student = require('../models/student_model'); // Твоя модель
+const Student = require('../models/student_model'); 
 
-// Настройка multer для загрузки файлов
 const storage = multer.memoryStorage();
 const upload = multer({ storage });
 
-// Загрузка Excel и сохранение в MongoDB
+
 router.post('/upload-excel', upload.single('file'), async (req, res) => {
   try {
     const workbook = XLSX.read(req.file.buffer, { type: 'buffer' });
@@ -17,7 +16,6 @@ router.post('/upload-excel', upload.single('file'), async (req, res) => {
 
     const data = XLSX.utils.sheet_to_json(sheet);
 
-    // Пример: сохраняем каждый объект как документ в коллекции студентов
     await Student.insertMany(data);
 
     res.json({ message: '✅ Excel данные успешно загружены!' });

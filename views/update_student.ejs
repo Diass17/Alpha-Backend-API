@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Обновление данных студента</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 40px;
+            background-color: #f4f4f4;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+        }
+
+        form {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            max-width: 500px;
+        }
+
+        input,
+        select {
+            width: 100%;
+            padding: 8px;
+            margin: 10px 0;
+            box-sizing: border-box;
+        }
+
+        label {
+            display: block;
+            margin-top: 10px;
+        }
+
+        button {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #1abc9c;
+            border: none;
+            color: white;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #16a085;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Обновление данных студента</h1>
+    <form id="updateForm">
+        <label>ФИО: <input type="text" id="full_name" required /></label>
+        <label>IIN: <input type="text" id="iin" required /></label>
+        <label>Email: <input type="email" id="email" required /></label>
+        <label>Телефон: <input type="text" id="phone" /></label>
+
+        <label><input type="checkbox" id="whatsapp" /> WhatsApp</label>
+        <label><input type="checkbox" id="telegram" /> Telegram</label>
+
+        <label>Статус:
+            <select id="status" required>
+                <option value="student">Student</option>
+                <option value="graduate">Graduate</option>
+            </select>
+        </label>
+
+        <label><input type="checkbox" id="top_student" /> Top Student</label>
+
+        <label>Источник финансирования:
+            <select id="funding_source" required>
+                <option value="full">Full</option>
+                <option value="TechOrda">TechOrda</option>
+                <option value="discount">Discount</option>
+            </select>
+        </label>
+
+        <label>Оплачено: <input type="number" id="amount_paid" required /></label>
+        <label>Осталось оплатить: <input type="number" id="amount_remaining" required /></label>
+        <label>Поток (Stream ID): <input type="number" id="stream_id" required /></label>
+
+        <button type="submit">Обновить</button>
+    </form>
+
+    <script>
+        const params = new URLSearchParams(window.location.search);
+        const studentId = params.get('id');
+        const form = document.getElementById('updateForm');
+
+        async function loadStudent() {
+            if (!studentId) {
+                alert('ID студента не указан в URL');
+                return;
+            }
+
+            try {
+                const res = await fetch(`/api/students/${studentId}`);
+                if (!res.ok) {
+                    const errorData = await res.json();
+                    alert('Ошибка загрузки студента: ' + (errorData.error || res.statusText));
+                    console.error('Ошибка загрузки студента:', errorData);
+                    return;
+                }
+                const student = await res.json();
+
+                document.getElementById('full_name').value = student.full_name;
+                document.getElementById('iin').value = student.iin;
+                document.getElementById('email').value = student.email;
+                document.getElementById('phone').value = student.phone || '';
+                document.getElementById('whatsapp').checked = student.whatsapp;
+                document.getElementById('telegram').checked = student.telegram;
+                document.getElementById('status').value = student.status;
+                document.getElementById('top_student').checked = student.top_student;
+                document.getElementById('funding_source').value = student.funding_source;
+                document.getElementById('amount_paid').value = student.amount_paid ?? 0;
+                document.getElementById('amount_remaining').value = student.amount_remaining ?? 0;
+                document.getElementById('stream_id').value = student.stream_id ?? 0;
+            } catch (err) {
+                alert('Ошибка загрузки студента: ' + err.message);
+                console.error(err);
+            }
+        }
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const amountPaid = Number(document.getElementById('amount_paid').value);
+            const amountRemaining = Number(document.getElementById('amount_remaining').value);
+            const streamId = Number(document.getElementById('stream_id').value);
+
+            if (isNaN(amountPaid) || isNaN(amountRemaining) || isNaN(streamId)) {
+                alert('Пожалуйста, введите корректные числовые значения для оплат и потока.');
+                return;
+            }
+
+            const updatedData = {
+                full_name: document.getElementById('full_name').value,
+                iin: document.getElementById('iin').value,
+                email: document.getElementById('email').value,
+                phone: document.getElementById('phone').value,
+                whatsapp: document.getElementById('whatsapp').checked,
+                telegram: document.getElementById('telegram').checked,
+                status: document.getElementById('status').value,
+                top_student: document.getElementById('top_student').checked,
+                funding_source: document.getElementById('funding_source').value,
+                amount_paid: amountPaid,
+                amount_remaining: amountRemaining,
+                stream_id: streamId
+            };
+
+            try {
+                const res = await fetch(`/api/students/${studentId}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(updatedData)
+                });
+
+                if (res.ok) {
+                    alert('Данные студента обновлены!');
+                    window.location.href = '/'; 
+                } else {
+                    const result = await res.json();
+                    alert('Ошибка: ' + result.error);
+                }
+            } catch (err) {
+                alert('Ошибка при отправке данных.');
+                console.error(err);
+            }
+        });
+
+        loadStudent();
+    </script>
+</body>
+
+</html>

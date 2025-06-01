@@ -1,4 +1,3 @@
-// importStudentsCSV.js
 const csv = require('csvtojson');
 const Student = require('./models/Student');
 

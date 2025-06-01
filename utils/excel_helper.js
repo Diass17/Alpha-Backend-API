@@ -1,13 +1,10 @@
-// importStudentsExcel.js
 const xlsx = require('xlsx');
 const Student = require('./models/Student');
 
-// Чтение Excel
 const workbook = xlsx.readFile('students.xlsx');
 const sheet = workbook.Sheets[workbook.SheetNames[0]];
 const jsonData = xlsx.utils.sheet_to_json(sheet);
 
-// Преобразование ключей
 const mappedData = jsonData.map((row) => ({
   fullName: row['ФИО'],
   iin: row['ИИН'],
@@ -23,7 +20,6 @@ const mappedData = jsonData.map((row) => ({
   stream: row['Поток'],
 }));
 
-// Сохранение в MongoDB
 Student.insertMany(mappedData)
   .then(() => console.log('✅ Импорт студентов завершён'))
   .catch((err) => console.error('❌ Ошибка при импорте:', err));

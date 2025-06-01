@@ -1,6 +1,6 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('../config/db');
-const Stream = require('./stream'); // Связь с потоком
+const Stream = require('./stream');
 
 const Student = sequelize.define('Student', {
   fullName: {
@@ -51,7 +51,6 @@ const Student = sequelize.define('Student', {
   },
 });
 
-// Связь с потоком (stream)
 Student.belongsTo(Stream, { foreignKey: 'streamId' });
 Stream.hasMany(Student, { foreignKey: 'streamId' });
 

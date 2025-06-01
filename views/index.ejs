@@ -89,9 +89,14 @@
         <button onclick="showSection('admin')">Админ студентов</button>
     </div>
     <div class="main">
-        <!-- Управление -->
         <div id="management" class="section active">
-            <h1>Управление студентами</h1>
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <h1>Управление студентами</h1>
+                <form method="GET" action="/logout">
+                    <button type="submit" class="auth-button">Выйти</button>
+                </form>
+            </div>
+
             <div class="search-filter">
                 <input type="text" id="studentSearch" placeholder="Поиск по имени" />
                 <select id="studentFilter">
@@ -102,14 +107,12 @@
                 <button onclick="loadStudentList()">Поиск</button>
                 <button onclick="showAddStudentForm()">Добавить студента</button>
             </div>
+
             <div id="studentTableContainer"></div>
 
             <div id="addStudentFormContainer" style="display: none">
-                <!-- вставим сюда форму позже -->
             </div>
         </div>
-
-        <!-- Финансовый модуль -->
         <div id="finance" class="section">
             <h1>Финансовый модуль</h1>
             <div class="search-filter">
@@ -120,11 +123,9 @@
             </div>
             <div id="streamStudentTableContainer">
                 <h3>Статистика потоков</h3>
-                <!-- диаграммы, списки или таблицы -->
             </div>
         </div>
 
-        <!-- Админ студентов -->
         <div id="admin" class="section">
             <h1>Админ студентов</h1>
             <div class="search-filter">
@@ -133,11 +134,8 @@
             </div>
             <div>
                 <h3>Финансовый обзор</h3>
-                <!-- показать агрегированные данные -->
                 <h3>Оплаты студентов</h3>
-                <!-- таблица оплат -->
                 <h3>Отчеты по финансированию</h3>
-                <!-- возможно выгрузка в Excel, PDF -->
             </div>
         </div>
     </div>
@@ -215,13 +213,13 @@
             }
         }
 
-            document.getElementById('searchButton').addEventListener('click', loadStudentsByStream);
+        document.getElementById('searchButton').addEventListener('click', loadStudentsByStream);
 
 
         async function loadStudentsByStream() {
             const currentSection = document.querySelector('#finance');
             if (!currentSection.classList.contains('active')) {
-                return; // Выход, если пользователь не в разделе "Финансовый модуль"
+                return;
             }
 
             const streamId = document.getElementById('streamSearch').value.trim();
@@ -265,21 +263,22 @@
         <tbody>`;
 
                 for (const s of students) {
-                    html += `<tr>
-              <td>${s.full_name}</td>
-              <td>${s.iin}</td>
-              <td>${s.email}</td>
-              <td>${s.phone}</td>
-              <td>${s.whatsapp ? 'Да' : 'Нет'}</td>
-              <td>${s.telegram ? 'Да' : 'Нет'}</td>
-              <td>${s.status}</td>
-              <td>${s.top_student ? 'Да' : 'Нет'}</td>
-              <td>${s.funding_source}</td>
-              <td>${s.amount_paid}</td>
-              <td>${s.amount_remaining}</td>
-              <td>${s.stream_id}</td>
-            </tr>`;
+                    html += `<tr onclick="window.location.href = '/api/students/update-student?id=${s.id}'" style="cursor:pointer;">
+        <td>${s.full_name}</td>
+        <td>${s.iin}</td>
+        <td>${s.email}</td>
+        <td>${s.phone}</td>
+        <td>${s.whatsapp ? 'Да' : 'Нет'}</td>
+        <td>${s.telegram ? 'Да' : 'Нет'}</td>
+        <td>${s.status}</td>
+        <td>${s.top_student ? 'Да' : 'Нет'}</td>
+        <td>${s.funding_source}</td>
+        <td>${s.amount_paid}</td>
+        <td>${s.amount_remaining}</td>
+        <td>${s.stream_id}</td>
+    </tr>`;
                 }
+
 
                 html += '</tbody></table>';
                 container.innerHTML = html;
@@ -327,15 +326,16 @@
           <tbody>`;
 
                 for (const s of students) {
-                    html += `<tr>
-            <td>${s.full_name}</td>
-            <td>${s.iin}</td>
-            <td>${s.email}</td>
-            <td>${s.status}</td>
-            <td>${s.amount_paid}</td>
-            <td>${s.amount_remaining}</td>
-          </tr>`;
+                    html += `<tr onclick="window.location.href = '/api/students/update-student?id=${s.id}'" style="cursor:pointer;">
+        <td>${s.full_name}</td>
+        <td>${s.iin}</td>
+        <td>${s.email}</td>
+        <td>${s.status}</td>
+        <td>${s.amount_paid}</td>
+        <td>${s.amount_remaining}</td>
+    </tr>`;
                 }
+
 
                 html += '</tbody></table>';
                 container.innerHTML = html;
@@ -345,7 +345,6 @@
             }
         }
 
-        // По умолчанию загрузим список студентов при загрузке страницы
         loadStudentList();
     </script>
 </body>

@@ -44,7 +44,7 @@ router.get('/index', (req, res) => {
   res.render('index', { user: req.session.user });
 });
 
-// Выход
+
 router.get('/logout', (req, res) => {
   req.session.destroy(() => {
     res.redirect('/login');

@@ -25,7 +25,6 @@
   text-align: center;
 }
 
-/* Заголовок */
 .auth-title {
   margin-bottom: 24px;
   font-size: 24px;
@@ -33,14 +32,12 @@
   color: #333333;
 }
 
-/* Подзаголовок */
 .auth-sub {
   margin-bottom: 24px;
   font-size: 16px;
   color: #555555;
 }
 
-/* Поля ввода */
 .auth-input {
   width: 100%;
   padding: 12px 14px;
@@ -56,7 +53,6 @@
   border-color: #6b5cf6;
 }
 
-/* Кнопка */
 .auth-button {
   width: 100%;
   padding: 12px;
